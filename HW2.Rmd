@@ -46,17 +46,19 @@ setwd(dir)
 Write your answer here:
 (1) Genome-wide expression (RNA) of all genes from all cells which are present in the blood (WBC, RBC & platelets).
 
-(2) The paper is actually a sub-study of a study which investigate the effect of dietry supplaments on the immune response after a             fat-rich meal.
-
+(2) The paper is actually a sub-study of a study which investigate the effect of dietry supplaments on the immune response after a
+    fat-rich meal.
+     
     The objective of the sub-study is to determine which genes are transcripted in white blood cells, after consuming a high-fat meal.
     Specifically, the study looks into the the temporal change and subject variabality in expression of innate immunity genes.
     
     The blood for analysis is drawn at 3 diffrent times: after 12h fasting before eating, 3 hours after meal and 6 hours after meal.
-    There are 5 subjects, each given 3 meals on different days, each with different dietry supplaments which had an insegnificant effect       Thus overall 3x5x3=45 transcriptomes where performed.
+    There are 5 subjects, each given 3 meals on different days, each with different dietry supplaments which had an insegnificant effect 
+    Thus overall 3x5x3=45 transcriptomes where performed.
     The meals and fasting times of the subjects were designed to minimize uncontrolled dietry effects.
 
     The blood was shaken, frozen, then total RNA isolated and enriched for non-RBC and non-ribosomal RNA, then sequenced.
-    WBC transcriptome was analyzed using various statistical methods for differential expression across experimental factors: Subject,         Time, Arm (dietry supplaments added), Day.
+    WBC transcriptome was analyzed using various statistical methods for differential expression across experimental factors: Subject, Time, Arm                 (dietry supplaments added), Day.
     The transcriptome was also analyzed for enrichment in immune response pathways.
     
     The target genes were validated using RT-PCR in 180 samples (from 20 subjects).
@@ -75,8 +77,24 @@ GEO accession number: study accession number GSE127530 and series record GSE1275
 
 - Read the count matrix and metadata into the corresponding variables below
 ```{r}
-counts <- 
-metadata <- 
+
+library(readr)
+counts <- read_table('GSE127530_fixed_combinedCounts.txt.gz')
+
+packages_for_tutorial <- c("DESeq2", "ggplot2", "GEOquery", "AnnotationDbi", "org.Hs.eg.db", "EnhancedVolcano", "pheatmap",
+                           "factoextra", "gridExtra", "corrplot", "dendextend")
+
+not_installed <- packages_for_tutorial[!(packages_for_tutorial %in% installed.packages()[ , "Package"])]
+
+for (package in not_installed) {
+  BiocManager::install(package) 
+}
+
+library(GEOquery)
+library(AnnotationDbi)
+library(org.Hs.eg.db)
+
+metadata <- getGEO(filename='GSE127530_series_matrix.txt')
 ```
 
 - Convert metadata to a tibble
